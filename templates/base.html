@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{% endblock %} :: Django Crud App</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="/">Django CRUD App</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="/"> Home</a>
+          </li>
+          {% if not request.user.is_authenticated %}
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'profile:login' %}"> Login</a>
+          </li>
+          {% endif %} {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="#"> {{ request.user.username}} </a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'profile:logout' %}"> Logout </a>
+          </li>
+          {% endif %}
+          <li class="nav-item active">
+            <a class="nav-link" href="api/v1/profile" target="_blank">
+              Profile API</a
+            >
+          </li>
+          <!-- <li class="nav-item">
+              <a class="nav-link" href="#">Pricing</a>
+            </li> -->
+          <!-- <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Dropdown link
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+              </div>
+            </li> -->
+        </ul>
+      </div>
+    </nav>
+
+    <main class="container mt-3">{% block content %} {% endblock %}</main>
+  </body>
+</html>

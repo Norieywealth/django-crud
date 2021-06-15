@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title%}
+Profile 
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+       
+        <form action="" method="POST" class="bg-light p-3">
+            {% csrf_token %}
+            <h4>User Profile Form</h4>
+            {% for message in messages %}
+            {{ message }}
+            {% endfor %}
+            <div class="form-group">
+                <input type="text" name="first_name" class="form-control" id="first_name" placeholder="First name..." required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="last_name" class="form-control" id="last_name" placeholder="Last name..." required>
+            </div>
+            <div class="form-group mt-1">
+                <input type="submit" name="submit" class="btn btn-primary" id="submit" value="Save">
+            </div>
+        </form>
+        <hr>
+        {% if count > 0%}
+            {% if count == 1 %}
+            There is {{ count }} profile record in the database
+            {% else %}
+            There are {{ count }} profile records in the database
+            {% endif %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <!-- <td>S/N</td> -->
+                    <td>First Name</td>
+                    <td>Last Name</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for profile in profiles %}
+                <tr>
+                    <!-- <td>
+                        {{ forloop.counter }}
+                    </td> -->
+                    <td>
+                        {{ profile.first_name}}
+                    </td>
+                    <td>
+                        {{ profile.last_name}}
+                    </td>
+                    <td>
+                        <a href="{% url 'profile:edit' profile.id %}" class="btn btn-warning">Edit</a>
+                    </td>
+                    <td>
+                        <a href="{% url 'profile:delete' profile.id %}" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+                
+                {% empty %}
+                <div class="alert alert-danger"> No profile records</div>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <ul class="pagination">
+            {% for i in paginator.page_range %}
+            <li class="page-item {% if i == page_number%} active {% endif %}">
+                <a href="?page={{i}}" class="page-link">{{ i }}</a>
+            </li>
+            {% endfor %}
+            
+        </ul>
+        {% else %}
+        <div class="alert alert-info">
+            No profile records
+        </div>
+        {% endif%}
+    </div>
+    <div class="col-md-3"></div>
+</div>
+{% endblock %}
